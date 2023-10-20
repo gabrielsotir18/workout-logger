@@ -2,6 +2,8 @@ package com.workoutlogger.workoutlogger.DTO;
 
 import jakarta.persistence.Entity;
 
+import java.util.Date;
+
 public class WorkoutLogDTO {
     private int id;
     private int exerciseId;
@@ -12,11 +14,13 @@ public class WorkoutLogDTO {
     private int sets;
     private int reps;
     private int weight;
+    private Date date;
 
     public WorkoutLogDTO() {
     }
 
-    public WorkoutLogDTO(int id, int exerciseId, String exercise, String exerciseDescription, int userId, String username, int sets, int reps, int weight) {
+    public WorkoutLogDTO(int id, int exerciseId, String exercise, String exerciseDescription, int userId, String username,
+                         int sets, int reps, int weight, Date date) {
         this.id = id;
         this.exerciseId = exerciseId;
         this.exercise = exercise;
@@ -26,6 +30,15 @@ public class WorkoutLogDTO {
         this.sets = sets;
         this.reps = reps;
         this.weight = weight;
+        this.date = date;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public int getId() {

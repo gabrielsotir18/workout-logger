@@ -27,7 +27,10 @@ public class UserDAOImpl implements UserDAO{
 
     @Override
     public User getByUsername(String username) {
-        TypedQuery<User> typedQuery = entityManager.createQuery("SELECT * FROM users WHERE username=:username",
+        System.out.println("UserDAOImpl::getByUsername");
+        System.out.println("UserDAOImpl::getByUsername - username[" + username + "]");
+
+        TypedQuery<User> typedQuery = entityManager.createQuery("SELECT u FROM User u WHERE u.username=:username",
                 User.class);
         typedQuery.setParameter("username", username);
         return typedQuery.getSingleResult();

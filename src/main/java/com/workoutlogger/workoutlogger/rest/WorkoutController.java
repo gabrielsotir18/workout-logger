@@ -2,10 +2,7 @@ package com.workoutlogger.workoutlogger.rest;
 
 import com.workoutlogger.workoutlogger.DTO.WorkoutLogDTO;
 import com.workoutlogger.workoutlogger.service.WorkoutLoggerService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/workout")
@@ -18,5 +15,9 @@ public class WorkoutController {
     @GetMapping("/test/{id}")
     public WorkoutLogDTO testMapping(@PathVariable("id") int id){
         return workoutLoggerService.getWorkoutLog(id);
+    }
+    @PostMapping("/test")
+    public void testPutMapping(@RequestBody WorkoutLogDTO workoutLogDTO) {
+        workoutLoggerService.logExercise(workoutLogDTO);
     }
 }

@@ -14,7 +14,7 @@ public interface WorkoutLoggerService {
      WorkoutLogDTO getWorkoutLog(int id);
      Exercise getExercise(int id);
      List<Exercise> getAllExercises();
-     List<WorkoutLog> gettAllWorkoutLogsByUser(User user);
+     List<WorkoutLog> getAllWorkoutLogsByUser(User user);
 
 
 }
