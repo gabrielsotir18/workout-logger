@@ -2,6 +2,7 @@ package com.workoutlogger.workoutlogger.DAO;
 
 import com.workoutlogger.workoutlogger.entities.User;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -20,8 +21,16 @@ public class UserDAOImpl implements UserDAO{
     }
 
     @Override
-    public User read(int id) {
+    public User getById(int id) {
         return entityManager.find(User.class, id);
+    }
+
+    @Override
+    public User getByUsername(String username) {
+        TypedQuery<User> typedQuery = entityManager.createQuery("SELECT * FROM users WHERE username=:username",
+                User.class);
+        typedQuery.setParameter("username", username);
+        return typedQuery.getSingleResult();
     }
 
     @Override
