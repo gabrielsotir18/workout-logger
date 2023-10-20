@@ -4,9 +4,11 @@ import jakarta.persistence.Entity;
 
 public class WorkoutLogDTO {
     private int id;
+    private int exerciseId;
     private String exercise;
     private String exerciseDescription;
-    private String user;
+    private int userId;
+    private String username;
     private int sets;
     private int reps;
     private int weight;
@@ -14,11 +16,13 @@ public class WorkoutLogDTO {
     public WorkoutLogDTO() {
     }
 
-    public WorkoutLogDTO(int id, String exercise, String exerciseDescription, String user, int sets, int reps, int weight) {
+    public WorkoutLogDTO(int id, int exerciseId, String exercise, String exerciseDescription, int userId, String username, int sets, int reps, int weight) {
         this.id = id;
+        this.exerciseId = exerciseId;
         this.exercise = exercise;
         this.exerciseDescription = exerciseDescription;
-        this.user = user;
+        this.userId = userId;
+        this.username = username;
         this.sets = sets;
         this.reps = reps;
         this.weight = weight;
@@ -30,6 +34,22 @@ public class WorkoutLogDTO {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getExerciseId() {
+        return exerciseId;
+    }
+
+    public void setExerciseId(int exerciseId) {
+        this.exerciseId = exerciseId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getExercise() {
@@ -48,12 +68,12 @@ public class WorkoutLogDTO {
         this.exerciseDescription = exerciseDescription;
     }
 
-    public String getUser() {
-        return user;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public int getSets() {
