@@ -1,7 +1,10 @@
 package com.workoutlogger.workoutlogger.entities;
 
+import com.workoutlogger.workoutlogger.DTO.WorkoutLogDTO;
 import jakarta.persistence.*;
 import org.hibernate.jdbc.Work;
+
+import java.util.Date;
 
 @Entity
 @Table(name = "workoutlogs")
@@ -27,13 +30,14 @@ public class WorkoutLog {
     private int weight;
 
     @Column(name = "date")
-    private String date;
+    @Temporal(TemporalType.DATE)
+    private Date date;
 
     public WorkoutLog(){
 
     }
 
-    public WorkoutLog(int id, int userId, int exerciseId, int sets, int reps, int weight, String date) {
+    public WorkoutLog(int id, int userId, int exerciseId, int sets, int reps, int weight, Date date) {
         this.id = id;
         this.userId = userId;
         this.exerciseId = exerciseId;
@@ -91,11 +95,11 @@ public class WorkoutLog {
         this.weight = weight;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
@@ -110,5 +114,14 @@ public class WorkoutLog {
                 ", weight=" + weight +
                 ", date='" + date + '\'' +
                 '}';
+    }
+
+    public void setExerciseData(WorkoutLogDTO workoutLogDTO) {
+        this.setExerciseId(workoutLogDTO.getExerciseId());
+        this.setReps(workoutLogDTO.getReps());
+        this.setSets(workoutLogDTO.getSets());
+        this.setWeight(workoutLogDTO.getWeight());
+        this.setDate(workoutLogDTO.getDate());
+
     }
 }

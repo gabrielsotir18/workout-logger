@@ -27,7 +27,14 @@ public class WorkoutLoggerServiceImpl implements WorkoutLoggerService{
     }
 
     @Override
+    @Transactional
     public void logExercise(WorkoutLogDTO workoutLogDTO) {
+        User user = userDAO.getById(workoutLogDTO.getUserId());
+
+        WorkoutLog workoutLog = new WorkoutLog();
+        workoutLog.setUserId(user.getId());
+        workoutLog.setExerciseData(workoutLogDTO);
+        workoutLogDAO.create(workoutLog);
     }
 
     @Override
@@ -49,10 +56,11 @@ public class WorkoutLoggerServiceImpl implements WorkoutLoggerService{
         int exerciseId = workoutLog.getExerciseId();
         int userId = workoutLog.getUserId();
         Exercise exercise = exerciseDAO.read(exerciseId);
-        User user = userDAO.read(userId);
-        WorkoutLogDTO workoutLogDTO = new WorkoutLogDTO(workoutLog.getId(), exercise.getExerciseName(), exercise.getExerciseDescription(),
-                user.getUsername(), workoutLog.getSets(), workoutLog.getReps(), workoutLog.getWeight());
-        return workoutLogDTO;
+        User user = userDAO.getById(userId);
+        return new WorkoutLogDTO(workoutLog.getId(),
+                exercise.getId() ,exercise.getExerciseName(), exercise.getExerciseDescription(),
+                user.getId(), user.getUsername(),
+                workoutLog.getSets(), workoutLog.getReps(), workoutLog.getWeight(), workoutLog.getDate());
     }
 
     @Override
@@ -66,7 +74,7 @@ public class WorkoutLoggerServiceImpl implements WorkoutLoggerService{
     }
 
     @Override
-    public List<WorkoutLog> gettAllWorkoutLogsByUser(User user) {
+    public List<WorkoutLog> getAllWorkoutLogsByUser(User user) {
         return null;
     }
 }
