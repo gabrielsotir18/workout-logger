@@ -13,6 +13,8 @@ public interface WorkoutLoggerService {
      void createUser(User user);
      WorkoutLogDTO getWorkoutLog(int id);
      Exercise getExercise(int id);
+     void updateExercise(Exercise exercise);
+     void deleteExercise(int id);
      List<Exercise> getAllExercises();
      List<WorkoutLog> getAllWorkoutLogsByUser(User user);
 

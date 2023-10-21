@@ -55,7 +55,7 @@ public class WorkoutLoggerServiceImpl implements WorkoutLoggerService{
         WorkoutLog workoutLog= workoutLogDAO.read(id);
         int exerciseId = workoutLog.getExerciseId();
         int userId = workoutLog.getUserId();
-        Exercise exercise = exerciseDAO.read(exerciseId);
+        Exercise exercise = exerciseDAO.getById(exerciseId);
         User user = userDAO.getById(userId);
         return new WorkoutLogDTO(workoutLog.getId(),
                 exercise.getId() ,exercise.getExerciseName(), exercise.getExerciseDescription(),
@@ -64,16 +64,30 @@ public class WorkoutLoggerServiceImpl implements WorkoutLoggerService{
     }
 
     @Override
+    @Transactional
     public Exercise getExercise(int id) {
-        return null;
+        return exerciseDAO.getById(id);
     }
 
     @Override
+    @Transactional
     public List<Exercise> getAllExercises() {
-        return null;
+        return exerciseDAO.getAllEntities();
     }
 
     @Override
+    @Transactional
+    public void deleteExercise(int id) {
+        exerciseDAO.delete(id);
+    }
+
+    @Override
+    @Transactional
+    public void updateExercise(Exercise exercise) {
+        exerciseDAO.update(exercise);
+    }
+    @Override
+    @Transactional
     public List<WorkoutLog> getAllWorkoutLogsByUser(User user) {
         return null;
     }
