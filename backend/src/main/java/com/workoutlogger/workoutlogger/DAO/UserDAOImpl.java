@@ -6,6 +6,9 @@ import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.lang.model.element.TypeElement;
+import java.util.List;
+
 @Repository
 public class UserDAOImpl implements UserDAO{
     private EntityManager entityManager;
@@ -37,12 +40,19 @@ public class UserDAOImpl implements UserDAO{
     }
 
     @Override
+    public List<User> getAllEntities() {
+        System.out.println("UserDAOImpl::getAllEntities");
+        TypedQuery<User> typedQuery = entityManager.createQuery("SELECT u FROM User u", User.class);
+        return typedQuery.getResultList();
+    }
+    @Override
     public void update(User user) {
         entityManager.merge(user);
     }
 
     @Override
     public void delete(int id) {
-        entityManager.remove(id);
+        User user = this.getById(id);
+        entityManager.remove(user);
     }
 }

@@ -48,6 +48,29 @@ public class WorkoutLoggerServiceImpl implements WorkoutLoggerService{
     public void createUser(User user) {
         userDAO.create(user);
     }
+    @Override
+    @Transactional
+    public void updateUser(User user) {
+        userDAO.update(user);
+    }
+
+    @Override
+    @Transactional
+    public User getUserById(int id) {
+        return userDAO.getById(id);
+    }
+
+    @Override
+    @Transactional
+    public List<User> getAllUsers() {
+        return userDAO.getAllEntities();
+    }
+
+    @Override
+    @Transactional
+    public void deleteUser(int id) {
+        userDAO.delete(id);
+    }
 
     @Override
     @Transactional

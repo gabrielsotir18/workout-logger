@@ -2,6 +2,7 @@ package com.workoutlogger.workoutlogger.rest;
 
 import com.workoutlogger.workoutlogger.DTO.WorkoutLogDTO;
 import com.workoutlogger.workoutlogger.entities.Exercise;
+import com.workoutlogger.workoutlogger.entities.User;
 import com.workoutlogger.workoutlogger.service.WorkoutLoggerService;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +16,6 @@ public class WorkoutController {
     public WorkoutController(WorkoutLoggerService workoutLoggerService) {
         this.workoutLoggerService = workoutLoggerService;
     }
-
     //******************************************************************************************************************
     @GetMapping("/exercises")
     public List<Exercise> exercisesGetMapping(){
@@ -40,6 +40,31 @@ public class WorkoutController {
     @DeleteMapping("/exercises/{id}")
     public void exerciseDeleteMapping(@PathVariable("id") int id) {
         workoutLoggerService.deleteExercise(id);
+    }
+    //******************************************************************************************************************
+    @GetMapping("/users")
+    public List<User> usersGetMapping(){
+        return workoutLoggerService.getAllUsers();
+    }
+    //******************************************************************************************************************
+    @GetMapping("/users/{id}")
+    User usersGetMappingById(@PathVariable("id") int id) {
+        return workoutLoggerService.getUserById(id);
+    }
+    //******************************************************************************************************************
+    @PostMapping("/users")
+    public void usersPostMapping(@RequestBody User user) {
+        workoutLoggerService.createUser(user);
+    }
+    //******************************************************************************************************************
+    @PutMapping("/users")
+    public void usersPutMapping(@RequestBody User user) {
+        workoutLoggerService.updateUser(user);
+    }
+    //******************************************************************************************************************
+    @DeleteMapping("/users/{id}")
+    public void usersDeleteMapping(@PathVariable("id") int id) {
+        workoutLoggerService.deleteUser(id);
     }
     //******************************************************************************************************************
 
