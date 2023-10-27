@@ -3,6 +3,10 @@
   "main": "app/app.js",
   "version": "1.0.0",
   "private": true,
+  "scripts": {
+    "lint": "npx eslint app",
+    "lint-fix": "npx eslint app --fix"
+  },
   "dependencies": {
     "@nativescript/core": "~8.6.0",
     "@nativescript/theme": "~3.0.2",
@@ -11,6 +15,8 @@
   "devDependencies": {
     "@nativescript/android": "8.6.2",
     "@nativescript/webpack": "~5.0.18",
+    "eslint": "^8.52.0",
+    "eslint-plugin-vue": "^9.18.1",
     "nativescript-vue-template-compiler": "~2.9.3"
   }
 }
