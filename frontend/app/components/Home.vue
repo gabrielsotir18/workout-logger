@@ -5,10 +5,10 @@
         </ActionBar>
 
         <GridLayout>
-            <Label class="info">
+            <Label class="info" @tap="talk('nu')">
                 <FormattedString>
                     <Span class="fas" text.decode="&#xf135; "/>
-                    <Span :text="message"/>
+                    <Span :text="message" />
                 </FormattedString>
             </Label>
         </GridLayout>
@@ -17,10 +17,20 @@
 
 <script>
   export default {
+    data() {
+        return {
+            message2: 'ceva frumos asa',
+        }
+    },
     computed: {
       message() {
         return "Blank {N}-Vue app";
       }
+    },
+    methods: {
+        talk(arg) {
+            console.log("say", arg)
+        }
     }
   };
 </script>
