@@ -55,5 +55,7 @@ module.exports = {
         multiline: 3,
       },
     ],
+    'vue/attribute-hyphenation': 'off',
+    'max-len': ['error', { 'code': 80 }]
   }
 }

@@ -10,6 +10,11 @@ export default {
       date: Date.parse('2023-10-27'),
       title: 'Back'
     },
+    {
+      id: 3,
+      date: Date.parse('2023-10-28'),
+      title: 'Legs'
+    },
   ],
 
   getWorkouts() {
