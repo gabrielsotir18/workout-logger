@@ -2,44 +2,38 @@
   <Page>
     <ActionBar title="Workouts" />
 
-    <GridLayout columns="50, *, 50" rows="50, 100, *, auto">
+    <GridLayout
+      columns="50, *, 50" rows="50, 100, *, auto"
+      @swipe="handleSwipe"
+    >
       <Label
-        class="fas" text.decode="&#xf060;"
-        textAlignment="center" backgroundColor="#c78f85" row="0"
-        col="0"
-        @tap="changeDate('decrease')"
+        class="fas action-btn" text.decode="&#xf060;" row="0"
+        col="0" @tap="changeDate('decrease')"
       />
       <Label
-        :text="humanReadableDate(date)"
-        textAlignment="center"
-        padding="10"
-        row="0"
-        col="1"
-        fontSize="24"
-        backgroundColor="#ffcfc7"
-        @tap="changeDate('now')"
+        :text="humanReadableDate(date)" class="cur-date" row="0"
+        col="1" @tap="changeDate('now')"
       />
       <Label
-        class="fas" text.decode="&#xf061;"
-        row="0" col="2" backgroundColor="#c78f85"
-        textAlignment="center" @tap="changeDate('increase')"
+        class="fas action-btn" text.decode="&#xf061;" row="0"
+        col="2" @tap="changeDate('increase')"
       />
       <Label
-        :text="curWorkout ? curWorkout.title : 'No workout'" row="1" col="1"
+        :text="curWorkout && curWorkout.title ? curWorkout.title : 'No workout'"
+        row="1" col="1"
         textAlignment="center" fontSize="32"
       />
-      <ListView
-        for="exercise in exercises" row="2" col="0"
-        colSpan="3" margin="10"
-      >
-        <v-template>
-          <Label :text="exercise.name" />
-        </v-template>
-      </ListView>
+      <ScrollView row="2" col="0" colSpan="3">
+        <StackLayout>
+          <ExerciseCard
+            v-for="exercise in exercises" :key="exercise.id"
+            :exercise="exercise"
+          />
+        </StackLayout>
+      </ScrollView>
       <Button
         text="Add Exercise" row="3" col="1"
-        backgroundColor="#5e2828" color="#FFFFFF" margin="20"
-        @tap="addExercise"
+        class="base-btn" @tap="addExercise"
       />
     </GridLayout>
   </Page>
@@ -48,8 +42,12 @@
 <script>
 import WorkoutService from '../services/WorkoutService.js'
 import ExerciseService from '../services/ExerciseService.js'
+import ExerciseCard from './ExerciseCard.vue'
 
 export default {
+  components: {
+    ExerciseCard,
+  },
   data() {
     return {
       workouts: WorkoutService.getWorkouts(),
@@ -113,7 +111,38 @@ export default {
     },
     addExercise() {
       console.log('Add Exercise')
+    },
+    handleSwipe(swipe) {
+      if (swipe.direction === 1) {
+        // swipe right, date decrease
+        this.changeDate('decrease')
+      } else if (swipe.direction === 2) {
+        // swipe left, date increase
+        this.changeDate('increase')
+      }
     }
   }
 }
 </script>
+
+<style scoped>
+.base-btn {
+  background-color: #5e2828;
+  color: #f1e1e1;
+  margin: 20px;
+}
+
+.action-btn {
+  text-align: center;
+  background-color: #c78f85;
+}
+
+.cur-date {
+  text-align: center;
+  padding: 10px;
+  font-size: 24;
+  font-weight: bold;
+  background-color: #ffcfc7;
+}
+
+</style>
