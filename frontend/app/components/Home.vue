@@ -1,9 +1,21 @@
 <template>
   <Page>
-    <ActionBar title="Workouts" />
+    <ActionBar>
+      <GridLayout columns="*, 50, 50" width="100%">
+        <Label text="Workouts" class="action-bar-title" col="0" />
+        <Button
+          text.decode="&#xf783;" col="1" class="fas"
+          fontSize="18" @tap="calendarView"
+        />
+        <Button
+          text.decode="&#x2b;" col="2" class="fas"
+          fontSize="18" @tap="addExercise"
+        />
+      </GridLayout>
+    </ActionBar>
 
     <GridLayout
-      columns="50, *, 50" rows="50, 100, *, auto"
+      columns="50, *, 50" rows="50, *, auto"
       @swipe="handleSwipe"
     >
       <Label
@@ -18,12 +30,16 @@
         class="fas action-btn" text.decode="&#xf061;" row="0"
         col="2" @tap="changeDate('increase')"
       />
-      <Label
+      <!-- <Label
         :text="curWorkout && curWorkout.title ? curWorkout.title : 'No workout'"
         row="1" col="1"
         textAlignment="center" fontSize="32"
-      />
-      <ScrollView row="2" col="0" colSpan="3">
+      /> -->
+      <ScrollView
+        v-if="exercises.length" row="1" col="0"
+        colSpan="3"
+        marginTop="10"
+      >
         <StackLayout>
           <ExerciseCard
             v-for="exercise in exercises" :key="exercise.id"
@@ -31,8 +47,22 @@
           />
         </StackLayout>
       </ScrollView>
+      <GridLayout
+        v-else columns="*" rows="50,50"
+        row="1" col="0" colSpan="3"
+        marginTop="100"
+      >
+        <Label
+          text.decode="&#xf44b;" row="0" fontSize="40"
+          col="0" textAlignment="center" class="fas"
+        />
+        <Label
+          text="No workout today, yet!" row="1"
+          col="0" textAlignment="center" fontSize="20"
+        />
+      </GridLayout>
       <Button
-        text="Add Exercise" row="3" col="1"
+        text="Add Exercise" row="2" col="1"
         class="base-btn" @tap="addExercise"
       />
     </GridLayout>
@@ -57,33 +87,29 @@ export default {
   },
   computed: {
     curWorkout() {
-      const workout = WorkoutService.getWorkoutByDate(
-        this.parsableDate(this.date)
-      )
-      return workout
+      return this.getWorkout(this.date)
     }
   },
   watch: {
     curWorkout(newVal) {
-      if (newVal) {
-        this.exercises = ExerciseService.getExercisesByWorkout(newVal.id)
-        console.log(this.exercises)
-      } else {
-        this.exercises = []
-      }
+      this.setExercies(newVal)
     }
   },
   mounted() {
-    const workout = WorkoutService.getWorkoutByDate(
-      this.parsableDate(this.date)
-    )
-    if (workout) {
-      this.exercises = ExerciseService.getExercisesByWorkout(workout.id)
-    } else {
-      this.exercises = []
-    }
+    const workout = this.getWorkout(this.date)
+    this.setExercies(workout)
   },
   methods: {
+    getWorkout(date) {
+      return WorkoutService.getWorkoutByDate(this.parsableDate(date))
+    },
+    setExercies(workout) {
+      if (workout) {
+        this.exercises = ExerciseService.getExercisesByWorkout(workout.id)
+      } else {
+        this.exercises = []
+      }
+    },
     printDate(item) {
       console.log(this.humanReadableDate(item.date))
     },
@@ -112,6 +138,9 @@ export default {
     addExercise() {
       console.log('Add Exercise')
     },
+    calendarView() {
+      console.log('Calendar View')
+    },
     handleSwipe(swipe) {
       if (swipe.direction === 1) {
         // swipe right, date decrease
@@ -130,6 +159,7 @@ export default {
   background-color: #5e2828;
   color: #f1e1e1;
   margin: 20px;
+  font-size: 18;
 }
 
 .action-btn {
@@ -143,6 +173,13 @@ export default {
   font-size: 24;
   font-weight: bold;
   background-color: #ffcfc7;
+}
+
+.action-bar-title {
+  text-align: left;
+  margin-left: 10;
+  font-size: 24;
+  font-weight: bold;
 }
 
 </style>

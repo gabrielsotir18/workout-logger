@@ -63,5 +63,9 @@ export default {
     const exerciseId = ExerciseService.getExerciseDef(curSet.exerciseId)
     const curBestReps = this.maxRepsWeight()[exerciseId][curSet.weight]
     return curSet.reps >= curBestReps
+  },
+  updateNote(set, note) {
+    const curSet = this.sets.find((s) => s.id === set.id)
+    curSet.note = note
   }
 }
