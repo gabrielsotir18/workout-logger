@@ -72,7 +72,8 @@
 <script>
 import WorkoutService from '../services/WorkoutService.js'
 import ExerciseService from '../services/ExerciseService.js'
-import ExerciseCard from './ExerciseCard.vue'
+import ExerciseCard from '../components/ExerciseCard.vue'
+import AddExercise from './AddExercise.vue'
 
 export default {
   components: {
@@ -137,6 +138,16 @@ export default {
     },
     addExercise() {
       console.log('Add Exercise')
+      this.$navigateTo(AddExercise, {
+        props: {
+          workout: this.curWorkout
+        },
+        transition: {
+          name: 'slideTop',
+          duration: 300,
+          curve: 'easeIn'
+        }
+      })
     },
     calendarView() {
       console.log('Calendar View')
@@ -148,6 +159,9 @@ export default {
       } else if (swipe.direction === 2) {
         // swipe left, date increase
         this.changeDate('increase')
+      } else if (swipe.direction === 4) {
+        // swipe up, add exercise
+        this.addExercise()
       }
     }
   }

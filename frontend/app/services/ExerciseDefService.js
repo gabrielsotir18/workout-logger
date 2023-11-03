@@ -21,5 +21,12 @@ export default {
   },
   getAllExercisesDef() {
     return this.exerciseDef
-  }
+  },
+  filterByName(name) {
+    return name ?
+      this.exerciseDef.filter((exercise) =>
+        exercise.name.toLowerCase().includes(name.toLowerCase())
+      ) :
+      this.getAllExercisesDef()
+  },
 }

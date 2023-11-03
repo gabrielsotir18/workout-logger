@@ -31,7 +31,8 @@
 
 <script>
 import SetService from '../services/SetService.js'
-import { Dialogs } from '@nativescript/core'
+import CustomModal from './CustomModal.vue'
+// import { Dialogs } from '@nativescript/core'
 
 export default {
   props: ['set'],
@@ -39,7 +40,8 @@ export default {
     return {
       weight: '',
       unit: '',
-      weightRegex: /(\d+)([a-zA-Z]+)/
+      weightRegex: /(\d+)([a-zA-Z]+)/,
+      noteDialogVisible: false,
     }
   },
   watch: {
@@ -60,23 +62,25 @@ export default {
       this.weight = weight
       this.unit = unit
     },
-    async openDialog() {
-      const res = await Dialogs.prompt({
-        title: 'Set note',
-        defaultText: this.set.note,
-        okButtonText: 'OK',
-        cancelButtonText: 'Cancel',
-        inputType: 'text',
-        inputTextField: {
-          className: 'custom-dialog-input',
-        },
+    openDialog() {
+      this.$showModal(CustomModal, {
+        props: {
+          title: 'Set Note',
+          initialText: this.set.note,
+        }
+      }).then((res) => {
+        if (res) {
+          SetService.updateNote(this.set, res.trim())
+        }
       })
-      console.log(res)
-
-      if (res.result) {
-        // need to update the set note
-        SetService.updateNote(this.set, res.text.trim())
-      }
+    },
+    onConfirm(value) {
+      console.log('confirm', value)
+      this.noteDialogVisible = false
+    },
+    onCancel() {
+      console.log('cancel')
+      this.noteDialogVisible = false
     }
   }
 }
