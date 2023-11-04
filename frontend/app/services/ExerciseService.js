@@ -90,5 +90,22 @@ export default {
     return this.exercises.find(
       (exercise) => exercise.id === exerciseId
     ).exerciseDefId
-  }
+  },
+  addExercise(workout, exerciseDef) {
+    const maxId = Math.max(...this.exercises.map(o => o.id))
+    const newExercise = {
+      id: maxId + 1,
+      exerciseDefId: exerciseDef.id,
+      workoutId: workout.id
+    }
+    this.exercises.push(newExercise)
+    return newExercise
+  },
+  getExercise(workout, exerciseDef) {
+    const filtered = this.exercises.find(
+      // eslint-disable-next-line max-len
+      (exercise) => exercise.workoutId === workout.id && exercise.exerciseDefId === exerciseDef.id
+    )
+    return filtered || this.addExercise(workout, exerciseDef)
+  },
 }

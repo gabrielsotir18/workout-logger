@@ -67,5 +67,17 @@ export default {
   updateNote(set, note) {
     const curSet = this.sets.find((s) => s.id === set.id)
     curSet.note = note
+  },
+  addSet(exercise, weight, reps, note) {
+    const maxId = Math.max(...this.sets.map(o => o.id))
+    const newSet = {
+      id: maxId + 1,
+      exerciseId: exercise.id,
+      weight: weight,
+      reps: reps,
+      note: note
+    }
+    this.sets.push(newSet)
+    return newSet
   }
 }

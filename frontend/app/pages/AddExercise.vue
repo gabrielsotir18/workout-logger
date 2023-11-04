@@ -38,6 +38,7 @@
 <script>
 import ExerciseDefService from '../services/ExerciseDefService.js'
 import AddExerciseDef from './AddExerciseDef.vue'
+import AddSets from './AddSets.vue'
 
 export default {
   props: ['workout'],
@@ -69,7 +70,18 @@ export default {
       })
     },
     addSets(exercise) {
-      console.log(exercise)
+      // console.log(exercise)
+      this.$navigateTo(AddSets, {
+        props: {
+          workout: this.workout,
+          exerciseDef: exercise,
+        },
+        transition: {
+          name: 'slideLeft',
+          duration: 300,
+          curve: 'easeIn'
+        }
+      })
     },
   }
 }

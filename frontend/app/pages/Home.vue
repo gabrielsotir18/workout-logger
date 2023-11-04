@@ -1,5 +1,6 @@
 <template>
-  <Page>
+  <!-- eslint-disable-next-line vue/v-on-event-hyphenation -->
+  <Page @navigatedTo="setExercies(getWorkout(date))">
     <ActionBar>
       <GridLayout columns="*, 50, 50" width="100%">
         <Label text="Workouts" class="action-bar-title" col="0" />
@@ -141,7 +142,7 @@ export default {
       console.log('Add Exercise')
       this.$navigateTo(AddExercise, {
         props: {
-          workout: this.curWorkout
+          workout: this.curWorkout ? this.curWorkout : this.date
         },
         transition: {
           name: 'slideTop',

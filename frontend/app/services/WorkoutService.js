@@ -19,6 +19,11 @@ export default {
       id: 4,
       date: Date.parse('2023-10-29'),
       title: ''
+    },
+    {
+      id: 5,
+      date: Date.parse('2023-11-4'),
+      title: ''
     }
   ],
 
@@ -33,5 +38,16 @@ export default {
   getWorkoutByDate(date) {
     const curDate = Date.parse(date)
     return this.workouts.find((workout) => workout.date === curDate) || null
+  },
+
+  addWorkout(date) {
+    const maxId = Math.max(...this.workouts.map(o => o.id))
+    const newWorkout = {
+      id: maxId + 1,
+      date:date,
+      title: ''
+    }
+    this.workouts.push(newWorkout)
+    return newWorkout
   }
 }
