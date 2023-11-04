@@ -27,7 +27,7 @@
         <StackLayout>
           <Label
             v-for="exercise in exercisesDef" :key="exercise.id"
-            :text="exercise.name" class="exercise-def"
+            :text="exercise.name" class="exercise-def" @tap="addSets(exercise)"
           />
         </StackLayout>
       </ScrollView>
@@ -67,7 +67,10 @@ export default {
           curve: 'easeIn'
         }
       })
-    }
+    },
+    addSets(exercise) {
+      console.log(exercise)
+    },
   }
 }
 </script>

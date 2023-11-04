@@ -74,6 +74,7 @@ import WorkoutService from '../services/WorkoutService.js'
 import ExerciseService from '../services/ExerciseService.js'
 import ExerciseCard from '../components/ExerciseCard.vue'
 import AddExercise from './AddExercise.vue'
+import CalendarView from './CalendarView.vue'
 
 export default {
   components: {
@@ -151,6 +152,13 @@ export default {
     },
     calendarView() {
       console.log('Calendar View')
+      // this.$navigateTo(CalendarView, {
+      //   transition: {
+      //     name: 'slideBottom',
+      //     duration: 300,
+      //     curve: 'easeIn'
+      //   }
+      // })
     },
     handleSwipe(swipe) {
       if (swipe.direction === 1) {
@@ -162,6 +170,9 @@ export default {
       } else if (swipe.direction === 4) {
         // swipe up, add exercise
         this.addExercise()
+      } else if (swipe.direction === 8) {
+        // swipe down, select workout
+        this.calendarView()
       }
     }
   }

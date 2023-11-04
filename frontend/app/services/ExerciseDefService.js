@@ -29,4 +29,14 @@ export default {
       ) :
       this.getAllExercisesDef()
   },
+  addExercise(name, muscleGroup) {
+    const maxId = Math.max(...this.exerciseDef.map(o => o.id))
+    this.exerciseDef.push(
+      {
+        id: maxId + 1,
+        name: name,
+        muscleGroup: muscleGroup
+      }
+    )
+  }
 }

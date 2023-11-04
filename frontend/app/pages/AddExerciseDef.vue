@@ -46,6 +46,8 @@
 </template>
 
 <script>
+import ExerciseDefService from '~/services/ExerciseDefService'
+
 export default {
   data() {
     return {
@@ -60,7 +62,14 @@ export default {
     },
     onConfirm() {
       console.log(this.exerciseName)
+      if (isNaN(this.muscleGroup)) this.muscleGroup = 0
       console.log(this.muscleGroup)
+      if (this.exerciseName) {
+        ExerciseDefService.addExercise(
+          this.exerciseName, this.muscleGroups[this.muscleGroup]
+        )
+        this.$navigateBack()
+      }
     },
   }
 }
@@ -97,7 +106,8 @@ export default {
 
 .dialog-button {
   background-color: #f29d9d;
-  margin: 1;
+  margin: 10;
   width: 50%;
+  color: rgb(59, 55, 55);
 }
 </style>
