@@ -40,7 +40,7 @@ export default {
     return {
       weight: '',
       unit: '',
-      weightRegex: /(\d+)([a-zA-Z]+)/,
+      weightRegex: /(\d+(?:\.\d+)?)(kg|lbs)/,
       noteDialogVisible: false,
     }
   },

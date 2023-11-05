@@ -37,7 +37,8 @@ export default {
 
   getWorkoutByDate(date) {
     const curDate = Date.parse(date)
-    return this.workouts.find((workout) => workout.date === curDate) || null
+    return this.workouts.find((workout) => workout.date === curDate) ||
+      this.addWorkout(curDate)
   },
 
   addWorkout(date) {

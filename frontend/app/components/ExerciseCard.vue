@@ -1,5 +1,8 @@
 <template>
-  <GridLayout columns="*" rows="50, *" class="base-card">
+  <GridLayout
+    columns="*" rows="50, *" class="base-card"
+    @tap="addSets"
+  >
     <Label
       :text="exercise.name" col="0" row="0"
       class="exercise-title"
@@ -15,12 +18,16 @@
 </template>
 
 <script>
+import WorkoutService from '~/services/WorkoutService.js'
 import SetService from '../services/SetService.js'
+import ExerciseDefService from '~/services/ExerciseDefService.js'
 import SetRow from './SetRow.vue'
+import AddSets from '~/pages/AddSets.vue'
+import ExerciseService from '~/services/ExerciseService'
 
 export default {
   components: { SetRow },
-  props: ['exercise'],
+  props: ['exercise', 'workout'],
   data() {
     return {
       sets: []
@@ -35,6 +42,26 @@ export default {
     this.sets = SetService.getSetsForExercise(this.exercise.id)
     console.log(this.sets)
   },
+  methods: {
+    addSets() {
+      const exercise = ExerciseService.getExerciseById(this.exercise.id)
+      const exerciseDef = ExerciseDefService.getExerciseDefById(
+        exercise.exerciseDefId
+      )
+
+      this.$navigateTo(AddSets, {
+        props: {
+          workout: this.workout,
+          exerciseDef: exerciseDef,
+        },
+        transition: {
+          name: 'slideLeft',
+          duration: 300,
+          curve: 'easeIn'
+        }
+      })
+    }
+  }
 }
 </script>
 

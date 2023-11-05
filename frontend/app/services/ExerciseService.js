@@ -108,4 +108,7 @@ export default {
     )
     return filtered || this.addExercise(workout, exerciseDef)
   },
+  getExerciseById(id) {
+    return this.exercises.find((exercise) => exercise.id === id)
+  }
 }

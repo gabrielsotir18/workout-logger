@@ -14,7 +14,7 @@
       </GridLayout>
     </ActionBar>
 
-    <GridLayout columns="*" rows="50, 80, 50, 80, 100" marginTop="20">
+    <GridLayout columns="*" rows="50, 80, 50, 80, 100, *" marginTop="20">
       <Label
         :text="`Weight(${unit})`" col="0" row="0"
         class="input-label" @tap="changeUnit"
@@ -64,6 +64,14 @@
           class="positive-btn" @tap="addSet"
         />
       </StackLayout>
+      <ScrollView col="0" row="5">
+        <StackLayout>
+          <Label
+            v-for="set in curSets" :key="set.id"
+            :text="`${set.reps}@${set.weight}`"
+          />
+        </StackLayout>
+      </ScrollView>
     </GridLayout>
   </Page>
 </template>
@@ -78,10 +86,16 @@ export default {
   data() {
     return {
       curWorkout: null,
+      curSets: [],
       unit: 'kg',
       weight: 0.0,
       reps: 0,
     }
+  },
+  computed: {
+    curExercise() {
+      return ExerciseService.getExercise(this.curWorkout, this.exerciseDef)
+    },
   },
   watch: {
     weight(newVal) {
@@ -97,17 +111,30 @@ export default {
   },
   mounted() {
     this.setCurWorkout()
+    this.setCurSets()
     console.log(this.exerciseDef)
+    console.log(this.curExercise)
+    console.log(this.curSets)
   },
   methods: {
+    parsableDate(timestamp) {
+      // eslint-disable-next-line max-len
+      return `${timestamp.getFullYear()}-${timestamp.getMonth() + 1}-${timestamp.getDate()}`
+    },
     setCurWorkout() {
       if (!this.workout.id) {
         // no workout object passed, just a date
-        this.curWorkout = WorkoutService.addWorkout(this.workout)
+        this.curWorkout = WorkoutService.addWorkout(
+          Date.parse(this.parsableDate(this.workout))
+        )
       } else {
         this.curWorkout = this.workout
       }
       console.log(this.curWorkout)
+    },
+    setCurSets() {
+      this.curSets = SetService.getSetsForExercise(this.curExercise.id)
+      console.log(this.curSets)
     },
     changeUnit() {
       const unitMapping = {
@@ -136,16 +163,16 @@ export default {
     },
     addSet() {
       console.log(`${this.reps}@${this.weight}`)
-      // eslint-disable-next-line max-len
-      const exercise = ExerciseService.getExercise(this.curWorkout, this.exerciseDef)
-      console.log(exercise)
+      if (this.reps < 1) return
+      console.log(this.curExercise)
       const set = SetService.addSet(
-        exercise,
+        this.curExercise,
         this.weight + this.unit,
         this.reps,
         ''
       )
       console.log(set)
+      this.setCurSets()
     }
   }
 }
@@ -198,6 +225,7 @@ export default {
     height: 50;
     border-radius: 10;
     font-size: 16;
+    font-weight: bold;
 }
 
 .positive-btn {

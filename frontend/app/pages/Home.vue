@@ -44,7 +44,7 @@
         <StackLayout>
           <ExerciseCard
             v-for="exercise in exercises" :key="exercise.id"
-            :exercise="exercise"
+            :exercise="exercise" :workout="curWorkout"
           />
         </StackLayout>
       </ScrollView>
@@ -75,7 +75,7 @@ import WorkoutService from '../services/WorkoutService.js'
 import ExerciseService from '../services/ExerciseService.js'
 import ExerciseCard from '../components/ExerciseCard.vue'
 import AddExercise from './AddExercise.vue'
-import CalendarView from './CalendarView.vue'
+// import CalendarView from './CalendarView.vue'
 
 export default {
   components: {
@@ -142,7 +142,7 @@ export default {
       console.log('Add Exercise')
       this.$navigateTo(AddExercise, {
         props: {
-          workout: this.curWorkout ? this.curWorkout : this.date
+          workout: this.curWorkout
         },
         transition: {
           name: 'slideTop',
