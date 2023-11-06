@@ -22,11 +22,11 @@ Currently, app is set up to run Android apps only, with IOS support coming in la
     $ npm -v
     9.8.1
     $ java --version
-    openjdk 21 2023-09-19 LTS
-    OpenJDK Runtime Environment Temurin-21+35 (build 21+35-LTS)
-    OpenJDK 64-Bit Server VM Temurin-21+35 (build 21+35-LTS, mixed mode, sharing)
+    openjdk 19.0.2 2023-01-17
+    OpenJDK Runtime Environment Temurin-19.0.2+7 (build 19.0.2+7)
+    OpenJDK 64-Bit Server VM Temurin-19.0.2+7 (build 19.0.2+7, mixed mode, sharing)
     $ javac --version
-    javac 21
+    javac 19.0.2
 
 ## Verify installation
 
