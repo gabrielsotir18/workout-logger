@@ -43,7 +43,8 @@
       >
         <StackLayout>
           <ExerciseCard
-            v-for="exercise in exercises" :key="exercise.id"
+            v-for="exercise in exercises"
+            :key="exercise.id"
             :exercise="exercise" :workout="curWorkout"
           />
         </StackLayout>
@@ -113,9 +114,6 @@ export default {
         this.exercises = []
       }
     },
-    printDate(item) {
-      console.log(this.humanReadableDate(item.date))
-    },
     humanReadableDate(timestamp) {
       // eslint-disable-next-line max-len
       return `${timestamp.getDate()}-${timestamp.getMonth() + 1}-${timestamp.getFullYear()}`
@@ -139,7 +137,6 @@ export default {
       this.date = newDate
     },
     addExercise() {
-      console.log('Add Exercise')
       this.$navigateTo(AddExercise, {
         props: {
           workout: this.curWorkout
@@ -152,7 +149,6 @@ export default {
       })
     },
     calendarView() {
-      console.log('Calendar View')
       // this.$navigateTo(CalendarView, {
       //   transition: {
       //     name: 'slideBottom',

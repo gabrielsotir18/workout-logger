@@ -56,20 +56,26 @@
         marginTop="10"
       >
         <Button
-          text="Clear"
-          class="negative-btn" @tap="clear"
+          :text="negative_text"
+          class="negative-btn" @tap="negative"
         />
         <Button
-          text="Add"
-          class="positive-btn" @tap="addSet"
+          :text="positive_text"
+          class="positive-btn" @tap="positive"
         />
       </StackLayout>
-      <ScrollView col="0" row="5">
+      <ScrollView col="0" row="5" marginTop="10">
         <StackLayout>
-          <Label
+          <ContentView
             v-for="set in curSets" :key="set.id"
-            :text="`${set.reps}@${set.weight}`"
-          />
+            @tap="setWeightReps(set)"
+          >
+            <SetRow
+              :set="set" :style="setRow" :mode="'basic'"
+              :class="{ 'checked': set.checked }"
+              @note-update="setCurSets(set)"
+            />
+          </ContentView>
         </StackLayout>
       </ScrollView>
     </GridLayout>
@@ -80,8 +86,12 @@
 import WorkoutService from '~/services/WorkoutService.js'
 import SetService from '~/services/SetService.js'
 import ExerciseService from '~/services/ExerciseService.js'
+import SetRow from '~/components/SetRow.vue'
 
 export default {
+  components: {
+    SetRow,
+  },
   props: ['workout', 'exerciseDef'],
   data() {
     return {
@@ -90,6 +100,12 @@ export default {
       unit: 'kg',
       weight: 0.0,
       reps: 0,
+      weightRegex: /(\d+(?:\.\d+)?)(kg|lbs)/,
+      negative_text: 'Clear',
+      positive_text: 'Add',
+      setRow: {
+        margin: '0 25',
+      }
     }
   },
   computed: {
@@ -112,9 +128,6 @@ export default {
   mounted() {
     this.setCurWorkout()
     this.setCurSets()
-    console.log(this.exerciseDef)
-    console.log(this.curExercise)
-    console.log(this.curSets)
   },
   methods: {
     parsableDate(timestamp) {
@@ -130,11 +143,14 @@ export default {
       } else {
         this.curWorkout = this.workout
       }
-      console.log(this.curWorkout)
     },
-    setCurSets() {
-      this.curSets = SetService.getSetsForExercise(this.curExercise.id)
-      console.log(this.curSets)
+    setCurSets(updateRepsWeight) {
+      this.curSets = SetService.getSetsForExercise(this.curExercise.id).map(
+        (obj) => {return {...obj, checked: false}}
+      )
+      if (updateRepsWeight) {
+        this.setWeightReps(updateRepsWeight)
+      }
     },
     changeUnit() {
       const unitMapping = {
@@ -157,23 +173,62 @@ export default {
         this.reps = parseInt(this.reps) - 1
       }
     },
-    clear() {
+    negative() {
+      if (this.negative_text === 'Delete') {
+        SetService.deleteSet(this.curSets.find((obj) => obj.checked === true))
+        this.setCurSets()
+      }
+
       this.weight = 0.0
       this.reps = 0
     },
-    addSet() {
-      console.log(`${this.reps}@${this.weight}`)
+    positive() {
       if (this.reps < 1) return
-      console.log(this.curExercise)
-      const set = SetService.addSet(
-        this.curExercise,
-        this.weight + this.unit,
-        this.reps,
-        ''
-      )
-      console.log(set)
-      this.setCurSets()
-    }
+
+      if (this.positive_text === 'Add') {
+        SetService.addSet(
+          this.curExercise,
+          this.weight + this.unit,
+          this.reps,
+          ''
+        )
+        this.setCurSets()
+      } else {
+        const set = this.curSets.find((obj) => obj.checked === true)
+        SetService.updateSet(
+          set,
+          this.weight + this.unit,
+          this.reps,
+        )
+        this.setCurSets(set)
+      }
+    },
+    setWeightReps(set) {
+      this.curSets.map((obj) => {
+        if (obj.id !== set.id) {
+          obj.checked = false
+        }
+      })
+
+      if (!set.checked) {
+        this.reps = set.reps
+
+        const matches = set.weight.match(this.weightRegex)
+        const[ , weight, unit] = matches
+        this.weight = weight
+        this.unit = unit
+
+        this.negative_text = 'Delete'
+        this.positive_text = 'Update'
+      } else {
+        this.reps = 0
+        this.weight = 0.0
+        this.unit = 'kg'
+        this.negative_text = 'Clear'
+        this.positive_text = 'Add'
+      }
+      set.checked = !set.checked
+    },
   }
 }
 </script>
@@ -236,5 +291,9 @@ export default {
 .negative-btn {
     color: #362f2f;
     background-color: #b3a8a6;
+}
+
+.checked {
+  background-color: rgba(197, 169, 169, 0.532);
 }
 </style>

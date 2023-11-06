@@ -18,7 +18,6 @@
 </template>
 
 <script>
-import WorkoutService from '~/services/WorkoutService.js'
 import SetService from '../services/SetService.js'
 import ExerciseDefService from '~/services/ExerciseDefService.js'
 import SetRow from './SetRow.vue'
@@ -40,7 +39,6 @@ export default {
   },
   mounted() {
     this.sets = SetService.getSetsForExercise(this.exercise.id)
-    console.log(this.sets)
   },
   methods: {
     addSets() {

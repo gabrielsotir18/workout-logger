@@ -61,9 +61,7 @@ export default {
       this.$navigateBack()
     },
     onConfirm() {
-      console.log(this.exerciseName)
       if (isNaN(this.muscleGroup)) this.muscleGroup = 0
-      console.log(this.muscleGroup)
       if (this.exerciseName) {
         ExerciseDefService.addExercise(
           this.exerciseName, this.muscleGroups[this.muscleGroup]

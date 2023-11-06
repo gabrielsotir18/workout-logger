@@ -6,9 +6,14 @@
       text.decode="&#xf091;" class="fas irrelevant"
     />
     <Label
-      v-if="set.note" col="1" row="0"
+      v-if="mode === 'card' && set.note" col="1" row="0"
       fontSize="20" text.decode="&#xf27a;"
       class="fas irrelevant" @tap="openDialog"
+    />
+    <Label
+      v-else-if="mode === 'basic'" col="1" row="0"
+      fontSize="20" text.decode="&#xf27a;"
+      class="fas irrelevant" :style="note_type" @tap="openDialog"
     />
     <Label
       :text="set.reps" col="2" row="0"
@@ -35,13 +40,27 @@ import CustomModal from './CustomModal.vue'
 // import { Dialogs } from '@nativescript/core'
 
 export default {
-  props: ['set'],
+  props: {
+    set: Object,
+    mode: {
+      type: String,
+      default: 'card',
+    },
+  },
+  emits: ['note-update'],
   data() {
     return {
       weight: '',
       unit: '',
       weightRegex: /(\d+(?:\.\d+)?)(kg|lbs)/,
       noteDialogVisible: false,
+    }
+  },
+  computed: {
+    note_type() {
+      return {
+        color: this.set.note ? '#8c4949' : '#b3a8a6',
+      }
     }
   },
   watch: {
@@ -69,19 +88,12 @@ export default {
           initialText: this.set.note,
         }
       }).then((res) => {
-        if (res) {
+        if (res || res === '') {
           SetService.updateNote(this.set, res.trim())
+          this.$emit('note-update')
         }
       })
     },
-    onConfirm(value) {
-      console.log('confirm', value)
-      this.noteDialogVisible = false
-    },
-    onCancel() {
-      console.log('cancel')
-      this.noteDialogVisible = false
-    }
   }
 }
 </script>

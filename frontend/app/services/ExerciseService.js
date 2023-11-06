@@ -1,4 +1,5 @@
 import ExerciseDefService from './ExerciseDefService.js'
+import SetService from './SetService.js'
 
 export default {
   exercises: [
@@ -72,6 +73,7 @@ export default {
     return this.exercises
       .filter((exercise) => exercise.workoutId === workoutId)
       .map((exercise) => this.getViewableExercise(exercise))
+      .filter((exercise) => SetService.hasSets(exercise))
   },
   getViewableExercise(exercise) {
     if (!exercise) {

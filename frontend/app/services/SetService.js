@@ -79,5 +79,19 @@ export default {
     }
     this.sets.push(newSet)
     return newSet
+  },
+  updateSet(set, weight, reps) {
+    this.sets = this.sets.map((obj) => {
+      if (obj.id === set.id) {
+        return {...obj, weight: weight, reps: reps}
+      }
+      return obj
+    })
+  },
+  deleteSet(set) {
+    this.sets = this.sets.filter((obj) => obj.id !== set.id)
+  },
+  hasSets(exercise) {
+    return this.sets.filter((set) => set.exerciseId === exercise.id).length > 0
   }
 }

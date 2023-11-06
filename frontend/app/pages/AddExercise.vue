@@ -55,12 +55,10 @@ export default {
     }
   },
   mounted() {
-    console.log(this.workout)
     this.exercisesDef = ExerciseDefService.getAllExercisesDef()
   },
   methods: {
     addExerciseDef() {
-      console.log('AddExerciseDef')
       this.$navigateTo(AddExerciseDef, {
         transition: {
           name: 'slideRight',
@@ -70,7 +68,6 @@ export default {
       })
     },
     addSets(exercise) {
-      // console.log(exercise)
       this.$navigateTo(AddSets, {
         props: {
           workout: this.workout,
